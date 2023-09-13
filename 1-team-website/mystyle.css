@@ -1,0 +1,47 @@
+.main {
+  text-align: center;
+}
+
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 150px;
+  width: 150px;
+}
+
+hr {
+  border-top: 3px solid;
+}
+
+.social {
+  font-size: 30px;
+  position: absolute;
+  top: 40%;
+  left: 47%;
+  color: black;
+}
+
+.schedule {
+  font-size: 30px;
+  position: absolute;
+  top: 55%;
+  left: 47%;
+  color: black;
+}
+
+.roster {
+  font-size: 30px;
+  position: absolute;
+  top: 70%;
+  left: 47%;
+  color: black;
+}
+
+.photos {
+  font-size: 30px;
+  position: absolute;
+  top: 85%;
+  left: 47%;
+  color: black;
+}
