@@ -1,4 +1,4 @@
-.main {
+h1 {
   text-align: center;
 }
 
@@ -14,34 +14,214 @@ hr {
   border-top: 3px solid;
 }
 
-.social {
+#socialMain {
   font-size: 30px;
-  position: absolute;
+  position: fixed;
   top: 40%;
-  left: 47%;
+  left: 44%;
   color: black;
 }
 
-.schedule {
+#scheduleMain {
   font-size: 30px;
-  position: absolute;
+  position: fixed;
   top: 55%;
   left: 47%;
   color: black;
 }
 
-.roster {
+#rosterMain {
   font-size: 30px;
-  position: absolute;
+  position: fixed;
   top: 70%;
   left: 47%;
   color: black;
 }
 
-.photos {
+#photosMain {
   font-size: 30px;
-  position: absolute;
+  position: fixed;
   top: 85%;
   left: 47%;
   color: black;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+.social {
+  background-color: rgb(0, 234, 255);
+  border-radius: 40px;
+  padding: 10px;
+  font-size: 20px;
+  position: absolute;
+  top: 11%;
+  left: 30%;
+  color: black;
+}
+
+.schedule {
+  background-color: rgb(0, 234, 255);
+  border-radius: 40px;
+  padding: 10px;
+  font-size: 20px;
+  position: absolute;
+  top: 11%;
+  left: 40%;
+  color: black;
+}
+
+.roster {
+  background-color: rgb(0, 234, 255);
+  border-radius: 40px;
+  padding: 10px;
+  font-size: 20px;
+  position: absolute;
+  top: 11%;
+  left: 50%;
+  color: black;
+}
+
+.photos {
+  background-color: rgb(0, 234, 255);
+  border-radius: 40px;
+  padding: 10px;
+  font-size: 20px;
+  position: absolute;
+  top: 11%;
+  left: 60%;
+  color: black;
+}
+
+.home {
+  font-size: 20px;
+  position: absolute;
+  top: 5%;
+  left: 90%;
+  color: black;
+}
+
+#rosterpic {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 600px;
+  width: 600px;
+}
+
+#ig {
+  font-size: 40px;
+  position: fixed;
+  top: 30%;
+  left: 30%;
+}
+
+#instagram{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10%;
+  height: 100px;
+  width: 100px;
+}
+
+#fb {
+  font-size: 40px;
+  position: fixed;
+  top: 50%;
+  left: 30%;
+  color: black;
+}
+
+#facebook{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3%;
+  height: 100px;
+  width: 100px;
+}
+
+#arbiter{
+  font-size: 40px;
+  position: fixed;
+  top: 35%;
+  left: 70%;
+  color: black;
+}
+
+#miaa{
+  font-size: 40px;
+  position: fixed;
+  top: 50%;
+  left: 70%;
+  color: black;
+}
+
+#hudl{
+  font-size: 40px;
+  position: fixed;
+  top: 65%;
+  left: 70%;
+  color: black;
+}
+
+#pic1{
+  display: block;
+  position: fixed;
+  margin-left: 10%;
+  margin-top: 2%;
+  height: 300px;
+  width: 400px;
+}
+
+#pic2{
+  display: block;
+  position: fixed;
+  margin-left: 40%;
+  margin-top: 2%;
+  height: 300px;
+  width: 400px;
+}
+
+#pic3{
+  display: block;
+  position: fixed;
+  margin-left: 70%;
+  margin-top: 2%;
+  height: 300px;
+  width: 400px;
+}
+
+#pic4{
+  display: block;
+  position: fixed;
+  margin-left: 10%;
+  margin-top: 22%;
+  height: 300px;
+  width: 400px;
+}
+
+#pic5{
+  display: block;
+  position: fixed;
+  margin-left: 40%;
+  margin-top: 22%;
+  height: 300px;
+  width: 400px;
+}
+
+#pic6{
+  display: block;
+  position: fixed;
+  margin-left: 70%;
+  margin-top: 22%;
+  height: 300px;
+  width: 400px;
+}
+
+#table{
+  margin-left: auto;
+  margin-right: auto;
 }
