@@ -1,0 +1,88 @@
+body {
+    background-image: url('https://media.istockphoto.com/id/1219382595/vector/math-equations-written-on-a-blackboard.jpg?s=612x612&w=0&k=20&c=ShVWsMm2SNCNcIjuWGtpft0kYh5iokCzu0aHPC2fV4A='); 
+    background-attachment: fixed;
+    background-position: center 100px;
+    font-family: sans-serif;
+    background-color: #333;
+    height: 60px; 
+  }
+
+h1 {
+    text-align: center;
+    background-color: powderblue;
+    padding: 10px 0;
+    border: 2px solid #333; 
+    border-radius: 5px; 
+
+}
+
+h2 {
+    text-align: center;
+}
+
+.dformula {
+    width: 30%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.vformula {
+    width: 30%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.kformula {
+    width: 30%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.button{
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#density {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+}
+
+#velocity{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+}
+
+#kinetic{
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f0f0f0;
+}
+
+form{
+    background-color: #ffdeaf;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 20px auto;
+    padding: 20px;
+    text-align: center;
+    max-width: 600px;
+}

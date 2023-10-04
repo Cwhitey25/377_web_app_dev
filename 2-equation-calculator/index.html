@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>Equation Calculator</title>
+        <script src="scripts.js"></script>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+        <h1>Physics Equations</h1>
+
+        <form>
+            <h2>Density Formula</h2>
+            Mass: <input class="dformula" name ="mass" type="text" placeholder="enter the mass (kg)">
+            Volume: <input class="dformula" name ="volume" type="text" placeholder="enter the volume (m³)">
+            <input class ="button" type="button" value="Calculate Density" onclick="calculateDensity()">
+            <div id="density"></div>
+        </form>
+
+        <form>
+            <h2>Velocity Formula</h2>
+            Distance: <input class="vformula" name ="distance" type="text" placeholder="enter the distance (m)">
+            Time: <input class="vformula" name ="time" type="text" placeholder="enter the time (s)">
+            <input class="button" type="button" value="Calculate Velocity" onclick="calculateVelocity()">
+            <div id="velocity"></div>
+        </form>
+
+        <form>
+            <h2>Kinetic Energy Formula</h2>
+            Mass: <input class="kformula" name ="kinetic mass" type="text" placeholder="enter the mass (kg)">
+            <br>
+            Distance: <input class="kformula" name ="kinetic distance" type="text" placeholder="enter the distance (m)">
+            Time: <input class="kformula" name ="kinetic time" type="text" placeholder="enter the time (s)">
+            <input class="button" type="button" value="Calculate Kinetic Energy" onclick="calculateKE()">
+            <div id="kinetic"></div>
+        </form>
+
+    </body>
+</html>
