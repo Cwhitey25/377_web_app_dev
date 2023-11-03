@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>
+            Blackjack
+        </title>
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg-min.js"></script>
+        <!-- Handles animations for SVGs ^-->
+        <script src="scripts.js"></script>
+    </head>
+
+    <body>
+        <div class="background"></div>
+
+        <div class="overlay">
+            <div class="instructions">
+                <h2>Welcome to Blackjack!</h2><br>
+                <p> <b>Instructions:</b><br><br>
+                 <b>Objective:</b> The goal of the game is to beat the dealer without going over 21.<br>
+
+                 <b>Card Values:</b><br>
+                    Number cards are worth their face value.<br>
+                    Face cards (Jacks, Queens, Kings) are worth 10.<br>
+                    Aces can be worth 1 or 11, whichever is more advantageous.<br>
+                    
+                 <b>The Game:</b><br>
+                    You are dealt two cards. The dealer receives one card face up.<br>
+                    You have the option to "Hit" (draw another card) or "Stand" (end your turn).<br>
+                    If your total card value exceeds 21, you bust and lose the round.<br>
+                    
+                 <b>Dealer's Turn:</b><br>
+                    The dealer reveals their face-down card after you stand.<br>
+                    The dealer must hit until their cards total 17 or higher.<br>
+                    
+                 <b>Winning:</b><br>
+                    If your card total is higher than the dealer without busting, you win.<br>
+                    If you get 21 from the first two cards, you get a "Blackjack" and are paid 3 to 2.<br>
+                    
+                 <b>Ties:</b><br>
+                    A tie is called a "push," and your bet is returned.<br>
+                    
+                 <b>Betting:</b><br>
+                    Click on the chips to place your bet before starting the game.<br>
+                    
+                 <b>Have Fun!:</b><br>
+                    Blackjack is both a game of skill and luck. Enjoy playing and best of luck at the tables!<br>
+                    Once you're ready, press "OK" to begin your Blackjack adventure!<br>
+                </p>
+                <button id="startGame">OK</button>
+            </div>
+        </div>
+
+        <svg id="svg" height="1000" width="1500">
+            <image id="backCard" x="300" y="150" height="200" width="200" href="svg/800px-Back03.svg.png" />
+
+            <g transform="translate(200,400)">
+                <image x="150" y="175" class="chip" data-value="10" href="svg/casino-chip.png" />
+                <image x="350" y="175" class="chip" data-value="25" href="svg/casino-chip (1).png" />
+                <image x="550" y="175" class="chip" data-value="50" href="svg/poker-chip.png" />
+                <image x="750" y="175" class="chip" data-value="500" href="svg/casino-chip (2).png" />
+            </g>
+        
+        </svg>
+
+        <div>
+            <button id="hitButton" onclick="drawCardForPlayer()" class="game-button">Hit</button>
+            <button id="standButton" onclick="playerStand()" class="game-button">Stand</button>
+
+            <span id="betText">Bet: $</span>
+            <span id="betAmount">0</span>
+            <span id="winText">Winnings: $</span>
+            <span id="winAmount">0</span>
+
+            <button id="playAgainBtn" onclick="resetGame()">Play Again</button>
+            <button id="push" onclick="resetGame()">Continue</button>
+        </div>
+
+        <div class="message-box" id="game-messages"></div>
+
+    </body>
+</html>

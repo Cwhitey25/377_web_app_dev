@@ -1,0 +1,167 @@
+#svg {
+    visibility: hidden;
+}
+
+.chip {
+    height: 100;
+    width: 100;
+}
+
+.game-button {
+    visibility: hidden;
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#hitButton {
+    position: absolute;
+    top: 500px; 
+    left: 650px;
+    background: linear-gradient(lightgreen, green);
+    color: #fff;
+}
+
+#hitButton:hover {
+    background: linear-gradient(darkgreen, green);
+}
+
+#standButton {
+    position: absolute;
+    top: 500px; 
+    left: 850px;
+    background: linear-gradient(lightcoral, red);
+    color: #fff;
+}
+
+#standButton:hover {
+    background: linear-gradient(darkred, red);
+}
+
+.message-box {
+    visibility: hidden;
+    position: absolute;
+    top: 480px; 
+    left: 650px;
+    background: linear-gradient(to bottom, #4C8BF5, #4FADFF);
+    color: white;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 15px;
+    font-family: Arial, sans-serif;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+#betAmount {
+    visibility: hidden;
+    position: absolute;
+    left: 180px; 
+    top: 200px;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+}
+
+#winAmount {
+    visibility: hidden;
+    position: absolute;
+    left: 240px;
+    top: 300px;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+}
+
+#betText {
+    visibility: hidden;
+    position: absolute;
+    left: 115px; 
+    top: 200px;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+}
+
+#winText {
+    visibility: hidden;
+    position: absolute;
+    left: 115px; 
+    top: 300px;
+    font-size: 25px;
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+}
+
+#playAgainBtn {
+    visibility: hidden;
+    position: absolute;
+    top: 480px; 
+    left: 950px;
+    padding: 10px 20px;
+    margin: 10px;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#playAgainBtn:hover {
+    background: linear-gradient(45deg, #2980b9, #9b59b6);
+}
+
+#push {
+    visibility: hidden;
+    position: absolute;
+    top: 480px; 
+    left: 950px;
+    padding: 10px 20px;
+    margin: 10px;
+    background: linear-gradient(45deg, #3498db, #8e44ad);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#push:hover {
+    background: linear-gradient(45deg, #2980b9, #9b59b6);
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://img.freepik.com/premium-vector/poker-table-background-green-color_47243-1833.jpg?size=626&ext=jpg&ga=GA1.1.386372595.1698796800&semt=ais');
+    background-size: cover;
+    background-position: center;
+    z-index: -1; 
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2; 
+}
+
+.instructions {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}

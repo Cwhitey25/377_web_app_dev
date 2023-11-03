@@ -4,7 +4,7 @@ function calculateDensity(){
 
     var density = ( mass/volume ).toFixed(2);
 
-    document.getElementById("density").innerHTML = density + " kilogram(s) per meters³";
+    document.getElementById("density").innerHTML = density + " kilogram(s) per meters";
 }
 
 function calculateVelocity(){

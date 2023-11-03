@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Lesson 11</title>
+        <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
+        <script>
+
+            function calculateCelsius(fahrenheit) {
+                let celsius = 5 / 9 * (fahrenheit - 32);
+                $('#celsius').val(celsius);
+            }
+
+            function calculateFahrenheit(celsius) {
+                let fahrenheit = 9 / 5 * celsius + 32;
+                $('#fahrenheit').val(fahrenheit);
+            }
+
+        </script>
+    </head>
+
+    <body>
+
+        <h1>JavaScript Lesson 11</h1>
+
+        <p>
+            Let's revisit our first JavaScript lesson but use jQuery instead of
+            <code>document.getElementById()</code>.
+        </p>
+
+        <button type="button" onclick="$('#demo').html(Date())">
+            Click me to display Date and Time.
+        </button>
+
+        <p id="demo"></p>
+
+        <hr>
+
+        <p>
+            Use the input fields below to convert temperatures between Celsius and Fahrenheit.
+        </p>
+
+        <input type="text" id="celsius" placeholder="Enter a value" onchange="calculateFahrenheit(this.value)" /> &#176;C
+        <br />
+        <input type="text" id="fahrenheit" placeholder="Enter a value" onchange="calculateCelsius(this.value)" /> &#176;F
+
+        <hr>
+
+        <p>
+            Use these buttons to show or hide all paragraphs on the page.
+        </p>
+
+        <button type="button" onclick="$('p').hide()">Hide Paragraphs</button>
+        <button type="button" onclick="$('p').show()">Show Paragraphs</button>
+
+    </body>
+</html>
