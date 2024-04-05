@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
+    <title>Blackjack</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="background"></div>
     <div class="container">
         <form action="authorize-signup.php" method="post" class="signup-form">
             <h2>Sign Up</h2>

@@ -4,17 +4,21 @@ extract($_REQUEST);
 
 if (!isset($content) || $content == '' || strpos($content, '://') || !file_exists($content . '.php'))
 {
-    $content = '';
+    $content = 'login.php';
 }
 
 function get_database_connection()
 {
-    $servername = 'localhost';
-    $username = 'root';
-    $password = 'password';
-    $dbname = 'blackjack';
+    $config = parse_ini_file(__DIR__ . '/../connection/config.ini', true);
 
-    $connection = new mysqli($servername, $username, $password, $dbname);
+    $dbConfig = $config['database'];
+
+    $host = $dbConfig['host'];
+    $user = $dbConfig['user'];
+    $password = $dbConfig['password'];
+    $database = $dbConfig['database'];
+
+    $connection = new mysqli($host, $user, $password, $database);
     if ($connection->connect_error)
     {
         die('Connection failed: ' . $connection->connect_error);

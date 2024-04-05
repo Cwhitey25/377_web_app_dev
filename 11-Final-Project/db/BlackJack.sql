@@ -6,6 +6,10 @@ CREATE TABLE `users` (
   `password_hash` varchar(255) NOT NULL,
   `coins` int DEFAULT '1000',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `last_bonus_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curved Text</title>
+<style>
+  .curved-text {
+    font-size: 24px; /* Adjust font size as needed */
+    text-align: center;
+  }
+
+  .curved-text path {
+    fill: none;
+    stroke: none;
+  }
+</style>
+</head>
+<body>
+<svg width="400" height="200">
+  <defs>
+    <path id="curve" d="M 10,80 Q 95,10 180,80 T 350,80" />
+  </defs>
+  <text class="curved-text">
+    <textPath xlink:href="#curve">This is some curved text</textPath>
+  </text>
+</svg>
+</body>
+</html>

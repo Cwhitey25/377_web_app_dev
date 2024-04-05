@@ -52,3 +52,351 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+
+#button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -1; 
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2; 
+}
+
+.instructions {
+    background: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.close-btn {
+    position: fixed;
+    top: 7%; 
+    right: 30%;
+    cursor: pointer;
+    font-size: 20px;
+    color: #ffffff;
+    background-color: #000000;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    transition: background-color 0.3s ease;
+    opacity: .8;
+}
+.close-btn:hover {
+    background-color: #333333;
+}
+
+.play-body {
+    user-select: none;
+    font-family: 'Arial', sans-serif; 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 72px; 
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    display: flex;
+    font-weight: bold;
+    margin-bottom: 80px;
+}
+
+.title span {
+    margin-top: 0;
+    background-image: linear-gradient(45deg, black, black);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    transition: transform 0.5s ease;
+}
+
+.title span:hover {
+    transform: translateY(-30px);
+    cursor: pointer;
+}
+
+.buttons-container {
+    text-align: center;
+}
+
+.play-button, .info-button {
+    padding: 12px 24px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    margin: 0 20px; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.play-button {
+    background-color: #4CAF50; 
+    color: white;
+    margin-right: 20px;
+}
+
+.info-button {
+    background-color: #007bff; 
+    color: white;
+    margin-left: 20px;
+}
+
+.play-button:hover {
+    background-color: #45a049; 
+}
+
+.info-button:hover {
+    background-color: #0056b3;
+}
+
+#curve1-text {
+    font-weight: bold; 
+    font-size: 26px;
+    transform: translateY(25%) translateX(30%);
+}
+
+#curve2-text {
+    font-size: 20px;
+    fill: white;
+    transform: translateY(10%) translateX(30%);
+}
+
+.game-body {
+    user-select: none;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    position: relative; 
+} 
+
+@keyframes moveChip {
+    0% {
+        top: -20%;
+        left: 0; 
+    }
+    100% {
+        top: 20%; 
+        left: 0; 
+    }
+}
+
+.chip-container {
+    width: 800px; 
+    height: 800px;
+    bottom: 0;
+    left: 0; 
+    transform-origin: top left; 
+    animation: moveChip 3s forwards;
+    overflow: hidden; 
+    position: absolute;
+}
+
+.chip {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #ddd;
+    border-radius: 50%;
+}
+
+.chip:hover {
+    cursor: pointer;
+}
+
+
+.chip:nth-child(1) {
+    visibility: hidden;
+}
+
+.chip:nth-child(2) {
+    top: 34%;
+    left: 6%;
+}
+
+.chip:nth-child(3) {
+    top: 41%;
+    left: 18%;
+}
+
+.chip:nth-child(4) {
+    top: 48%;
+    left: 30%;
+}
+
+.chip:nth-child(5) {
+    top: 53%;
+    left: 42%;
+}
+
+.chip:nth-child(6) {
+    top: 56%;
+    left: 55%;
+}
+
+.chip:nth-child(7) {
+    top: 58%;
+    left: 68%;
+}
+
+.svg-container {
+    position: absolute;
+}
+
+@keyframes flyInAnimation {
+    0% { transform: translateY(-100vh); opacity: 0; }
+    100% { transform: translateY(50%) rotate(-25deg); opacity: 1; }
+}
+
+.backcard {
+    width: 175px;
+    height: 175px;
+    position: absolute;
+    top: 20%;
+    right: 26%; 
+    animation: flyInAnimation 1s ease-in-out forwards;
+}
+
+.svg-container:hover {
+    cursor: pointer;
+}
+
+.wood-box {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 150px;
+    height: 80px; 
+    background-color: #8B4513; 
+    border: 3px solid #654321; 
+    border-radius: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.coin-icon {
+    position: fixed;
+    top: 5%;
+    left: 2%;
+    width: 40px; 
+    height: 40px; 
+    background-color: gold;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.coin-count {
+    position: fixed;
+    top: 6%;
+    left: 10%;
+    color: yellow;
+    font-size: 24px; 
+    margin-left: -75px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+#place-bet {
+    position: absolute;
+    font-size: 24px; 
+    left: 44%;
+    bottom: 30%;
+    animation: zoomInOut 3s infinite alternate; 
+    color: #ffffff;
+    font-family: 'Exo 2', sans-serif;
+    visibility: hidden;
+  }
+  
+  @keyframes zoomInOut {
+    0% {
+      transform: scale(1); 
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1); 
+    }
+  }
+
+.notification-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(10px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notification-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    z-index: 1000;
+}
+
+.notification-content h2 {
+    margin-top: 0;
+}
+
+.notification-content p {
+    margin-bottom: 20px;
+}
+
+#coin-notification-btn {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#coin-notification-btn:hover {
+    background-color: #0056b3;
+}

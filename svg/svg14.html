@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banana Curve</title>
+<style>
+  .banana {
+    position: relative;
+    width: 200px; /* Adjust as needed */
+    height: 200px; /* Adjust as needed */
+  }
+
+  .element {
+    position: absolute;
+    background-color: yellow; /* Or any other color to resemble a banana */
+    width: 50px; /* Adjust as needed */
+    height: 20px; /* Adjust as needed */
+    border-radius: 50%;
+  }
+
+  .element:nth-child(1) {
+    top: 0;
+    left: 50%;
+  }
+
+  .element:nth-child(2) {
+    top: 20%;
+    left: 40%;
+  }
+
+  .element:nth-child(3) {
+    top: 40%;
+    left: 30%;
+  }
+
+  .element:nth-child(4) {
+    top: 60%;
+    left: 40%;
+  }
+
+  .element:nth-child(5) {
+    top: 80%;
+    left: 50%;
+  }
+</style>
+</head>
+<body>
+
+<div class="banana">
+  <div class="element"></div>
+  <div class="element"></div>
+  <div class="element"></div>
+  <div class="element"></div>
+  <div class="element"></div>
+</div>
+
+</body>
+</html>
