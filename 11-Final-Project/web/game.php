@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +11,15 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts.js"></script>
 </head>
+
 <body class="game-body">
+
+<div class="notification-container">
+    <div class="notification-content">
+        Congratulations! You have received a bonus of 1000 coins.
+        <button id="coin-notification-btn" onclick="hideNotification()">OK</button>
+    </div>
+</div>
 
 <?php
 
@@ -46,12 +53,15 @@ $lastBonusTime = strtotime($user['last_bonus_at']);
 $currentTimestamp = time();
 $twentyFourHoursInSeconds = 24 * 60 * 60;
 $timeSinceLastBonus = $currentTimestamp - $lastBonusTime;
+$accountCreated = strtotime($user['created_at']);
+$timeSinceCreated = $currentTimestamp - $accountCreated;
 
-if ($timeSinceLastBonus >= $twentyFourHoursInSeconds) {
+if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $twentyFourHoursInSeconds) {
     echo '<script>';
     echo 'showNotification()';
     echo '</script>';
 }
+
 ?>
 
     <div class="background"></div>
@@ -114,19 +124,6 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds) {
     <script>
         $(document).ready(function() {
 
-            $('#coin-notification-btn').click(function() {
-                $.ajax({
-                    type: 'POST',
-                    url: 'update-bonus.php', 
-                    success: function(response) {
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
-
             setTimeout(function() {
                 $('#place-bet').css("visibility", "visible"); 
             }, 3000);
@@ -167,12 +164,5 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds) {
             });
         });
     </script>
-
-    <div class="notification-container">
-        <div class="notification-content">
-            Congratulations! You have received a bonus of 1000 coins.
-            <button id="coin-notification-btn" onclick="hideNotification()">OK</button>
-        </div>
-    </div>
 </body>
 </html>
