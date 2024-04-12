@@ -7,6 +7,7 @@
     <title>Blackjack</title>
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts.js"></script>
@@ -105,7 +106,7 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
                     while($row = $result->fetch_assoc()) {
                         echo '<div class="user-info">';
                         echo '<img src="images/coin.png" class="coin-icon">'; 
-                        echo '<span>' . number_format($row["coins"]) . '</span>';
+                        echo '<span id="coins">' . number_format($row["coins"]) . '</span>';
                         echo '</div>'; 
                     }
                 } else {
@@ -121,12 +122,54 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
 
     <div id="place-bet">Place Your Bet</div>
 
+    <div><span id="totalBet"></span></div>
+
+    <div class="mainbuttons-container">
+        <button class="cancel-button" onclick="clearBet()">
+            Cancel <i class="bi bi-x-circle"></i>
+        </button>
+        <button class="deal-button" onclick="startDeal()">
+            Deal <i class="bi bi-play-fill" ></i>
+        </button>
+    </div>
+
+    <div class="gamebuttons-container">
+        <button class="hit-button" onclick="Hit()">
+            Hit <i class="bi bi-x-circle"></i>
+        </button>
+        <button class="stand-button" onclick="Stand()">
+            Stand <i class="bi bi-play-fill" ></i>
+        </button>
+    </div>
+
+    <div class="card-container">
+        <div class="card" id="card"></div>
+    </div>
+
     <script>
         $(document).ready(function() {
 
-            setTimeout(function() {
-                $('#place-bet').css("visibility", "visible"); 
-            }, 3000);
+            var chipsClickable = false;
+
+            $.ajax({
+                url: "SVG/",
+                success: function (data) {
+                    let fileNames = $(data).find('a').map(function () {
+                    return $(this).text();
+                    }).get();
+
+                    fileNames.forEach(function (fileName) {
+                    if (!fileName.includes('chip') && !fileName.includes('back') && !fileName.includes('Name') && !fileName.includes('modified') && !fileName.includes('Size') && !fileName.includes('Description') && !fileName.includes('Directory')) {
+                        deck.push(fileName);
+                    }
+                    });
+
+                    console.log(deck);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Failed to fetch SVG directory:", errorThrown);
+                }
+                });
 
             $.ajax({
                 url: "SVG/",
@@ -162,6 +205,95 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
                     playAnimation();
                 }
             });
+
+            setTimeout(function() {
+                $('#place-bet').css("visibility", "visible"); 
+            }, 1400);
+
+            setTimeout(function() {
+                $(".chip").on('click', function() {
+                    if (!$(this).hasClass("final-chip")) {
+                        var chipValue = parseInt($(this).attr("value"));
+                        totalBet += chipValue;
+
+                        var coins = $("#coins").text();
+                        var cleanNumber = coins.replace(/,/g, '');
+                        var number = parseInt(cleanNumber);
+
+                        if(totalBet > number){
+                            checkBet();
+                            totalBet -= chipValue;
+                        } else {
+
+                            $('#place-bet').css("visibility", "hidden");
+                            $("#totalBet").text(formatter.format(totalBet));
+                            $('.mainbuttons-container').css("visibility", "visible");
+
+                            var original = $(this);
+                            var clone = $(this).clone()
+                            var container = original.parent();
+
+                            var containerWidth = container.width();
+                            var containerHeight = container.height();
+
+                            var offset = original.position();
+                            var originalTop = (offset.top / containerHeight) * 80 + '%';
+                            var originalLeft = (offset.left / containerWidth) * 98 + '%';
+
+                            clone.css({
+                                position: 'absolute',
+                                top: originalTop,
+                                left: originalLeft
+                            });
+
+                            clone.css("box-shadow", "0 0 10px 5px rgba(255, 255, 0, 0.7)");
+                            $(".chip-container").append(clone);
+                            clone.addClass('placed');
+
+                            chipsToBet++;
+                        
+                            animateToDestination(clone);
+                        }
+                    }
+                    
+                });
+
+                $(".chip-container").on("click", ".final-chip", function() {
+                    var chipValue = parseInt($(this).attr("value"));
+                    totalBet -= chipValue;
+
+                    $('#place-bet').css("visibility", "hidden");
+                    $("#totalBet").text(formatter.format(totalBet));
+
+                    var original = $(this);
+                    var clone = $(this).clone();
+                    var container = original.parent();
+
+                    var containerWidth = container.width();
+                    var containerHeight = container.height();
+
+                    var offset = original.position();
+                    var originalTop = (offset.top / containerHeight) * 80 + '%';
+                    var originalLeft = (offset.left / containerWidth) * 98 + '%';
+
+                    clone.css({
+                        position: 'absolute',
+                        top: originalTop,
+                        left: originalLeft
+                    });
+
+                    clone.css("box-shadow", "0 0 10px 5px rgba(255, 255, 0, 0.7)");
+                    original.remove();
+                    
+                    $(".chip-container").append(clone);
+
+                    chipsToBet--;
+                
+                    returnChip(clone);
+                
+                });
+            }, 1400);
+
         });
     </script>
 </body>

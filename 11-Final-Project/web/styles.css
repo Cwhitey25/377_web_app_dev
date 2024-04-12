@@ -186,13 +186,13 @@ button:hover {
 #curve1-text {
     font-weight: bold; 
     font-size: 26px;
-    transform: translateY(25%) translateX(30%);
+    transform: translateY(12%) translateX(30%);
 }
 
 #curve2-text {
     font-size: 20px;
     fill: white;
-    transform: translateY(10%) translateX(30%);
+    transform: translateY(-3%) translateX(30%);
 }
 
 .game-body {
@@ -400,4 +400,138 @@ button:hover {
 
 #coin-notification-btn:hover {
     background-color: #0056b3;
+}
+
+#totalBet {
+    position: absolute;
+    font-size: 30px; 
+    left: 45%;
+    bottom: 40%;
+    color: #ffffff;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: bold;
+  }
+
+.mainbuttons-container {
+    visibility: hidden;
+    position: absolute;
+    top: calc(65%); 
+    left: calc(50% - 120px);
+    display: flex;
+    justify-content: center;
+}
+
+.cancel-button,
+.deal-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 6%;
+}
+
+.cancel-button {
+    background-color: #ff5733; 
+    color: #fff; 
+}
+
+.deal-button {
+    background-color: #28a745;
+    color: #fff; 
+}
+
+.cancel-button:hover,
+.deal-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.deal-button .bi {
+    vertical-align: center;
+    font-size: 1.5em;
+}
+
+.cancel-button .bi{
+    font-size: 1.2m;
+    margin-left: 2%;
+
+}
+
+.gamebuttons-container {
+    visibility: hidden;
+    position: absolute;
+    top: calc(65%); 
+    left: calc(50% - 120px);
+    display: flex;
+    justify-content: center;
+}
+
+.hit-button,
+.stand-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 6%;
+}
+
+.hit-button {
+    background-color: #28a745;
+    color: #fff; 
+}
+
+.stand-button {
+    background-color: #ff5733;
+    color: #fff; 
+}
+
+.hit-button:hover,
+.stand-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.hit-button .bi {
+    vertical-align: center;
+    font-size: 1.5em;
+}
+
+.stand-button .bi{
+    font-size: 1.2m;
+    margin-left: 2%;
+
+}
+
+.card-container {
+    position: relative;
+    width: 175px;
+    height: 175px;
+    left: 90%;
+}
+
+.card {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+}
+
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
 }
