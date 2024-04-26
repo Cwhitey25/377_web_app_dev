@@ -224,6 +224,7 @@ button:hover {
     animation: moveChip 3s forwards;
     overflow: hidden; 
     position: absolute;
+    z-index: 2;
 }
 
 .chip {
@@ -289,6 +290,7 @@ button:hover {
     top: 20%;
     right: 26%; 
     animation: flyInAnimation 1s ease-in-out forwards;
+    z-index: 3;
 }
 
 .svg-container:hover {
@@ -415,10 +417,11 @@ button:hover {
 .mainbuttons-container {
     visibility: hidden;
     position: absolute;
-    top: calc(65%); 
-    left: calc(50% - 120px);
+    top: 65%; 
+    left: 42%;
     display: flex;
     justify-content: center;
+    z-index: 3;
 }
 
 .cancel-button,
@@ -464,14 +467,17 @@ button:hover {
 .gamebuttons-container {
     visibility: hidden;
     position: absolute;
-    top: calc(65%); 
-    left: calc(50% - 120px);
+    top: 80%; 
+    left: 42%;
     display: flex;
     justify-content: center;
+    z-index: 3;
 }
 
 .hit-button,
-.stand-button {
+.stand-button,
+.double-button,
+.split-button {
     display: flex;
     align-items: center;
     padding: 10px 20px;
@@ -493,6 +499,16 @@ button:hover {
     color: #fff; 
 }
 
+.double-button {
+    background-color: #3328a7;
+    color: #fff; 
+}
+
+.split-button {
+    background-color: #ff8234;
+    color: #fff; 
+}
+
 .hit-button:hover,
 .stand-button:hover {
     transform: scale(1.05);
@@ -506,23 +522,37 @@ button:hover {
 
 .stand-button .bi{
     font-size: 1.2m;
+    margin-left: 10%;
+
+}
+
+.double-button .bi {
+    vertical-align: center;
     margin-left: 2%;
+}
+
+.split-button .bi{
+    font-size: 1.2m;
+    margin-left: 10%;
 
 }
 
 .card-container {
-    position: relative;
-    width: 175px;
-    height: 175px;
-    left: 90%;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -999;
 }
 
 .card {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 175px;
+    height: 175px;
+    left: 63%;
+    top: 31%;
     transform-style: preserve-3d;
     transition: transform 0.5s;
+    transform: rotate(-25deg);
 }
 
 .front, .back {
@@ -535,3 +565,62 @@ button:hover {
 .back {
     transform: rotateY(180deg);
 }
+
+.bubble {
+    visibility: hidden;
+    position: absolute;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 12px;
+    background: linear-gradient(to bottom, #4e7af7, #4682b4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    outline: 2px solid #cccccc; 
+    z-index: 1000;
+  }
+  
+  .triangle {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid #4e7af7;
+    margin-right: -5px; 
+  }
+  
+  .dealer {
+    left: 26%;
+    top: 18%;
+  }
+  
+  .player {
+    left: 26%;
+    top: 60%;
+  }
+  
+.card-count1 {
+    font-family: Arial, sans-serif;
+    font-weight: bold; 
+    text-align: center; 
+    line-height: 30px; 
+    font-size: 25px;
+}
+
+.card-count2 {
+    font-family: Arial, sans-serif;
+    font-weight: bold; 
+    text-align: center; 
+    line-height: 30px; 
+    font-size: 25px;
+}
+  
+  .dealer .triangle {
+    right: -12px;
+    top: 12px;
+  }
+  
+  .player .triangle {
+    right: -12px;
+    top: 12px;
+  }

@@ -1,11 +1,14 @@
 var chipsToBet = 0;
 var totalBet = 0;
 let deck = [];
-var userX = 50;
-var userY = 60;
-var dealerX = 50;
-var dealerY = 30;
+var userX = 30;
+var userY = 50;
+var dealerX = 30;
+var dealerY = 10;
 var colorChangeAllowed = true;
+var userVal = 0;
+var dealerVal = 0;
+var zval = 0;
 
 
 function playAnimation() {
@@ -114,37 +117,97 @@ function clearBet() {
 }
 
 function startDeal() {
-    changeTable();
-    shuffleDeck();
+    if (totalBet > 0){
+        $(".card-container").css("z-index", "1");
+        changeTable();
+        shuffleDeck();
 
-    for (var i = 0; i < 4; i++) {
-        if(i == 3){
-            var $backCard = $(".backcard").clone(); 
-            $backCard.appendTo(".game-body"); 
+        for (var i = 0; i < 4; i++) {
+            if(i == 3){
+                var $backCard = $(".backcard").clone(); 
+                $backCard.appendTo(".card-container"); 
+                $backCard.removeClass('backcard');
+                $backCard.addClass('card');
+                $backCard.addClass('dealerBackCard');
 
-            $backCard.animate({
-                top: 30 + "%",
-                left: 60 + "%"
-            }, 1000, function() {
-            });
-        } else {
-            if(i % 2 == 0){
-                console.log("yo");
-                flipAndMoveCard(getCard(), userX, userY)
-                userX += 5;
+                setTimeout(function() {
+                    $backCard.animate({
+                        top: 10 + "%",
+                        left: 34 + "%",
+                        rotate: "25deg",
+                        zIndex: 100
+                    }, 1000, function() {
+                    });
+                }, 1500);
+            } else {
+                if(i % 2 == 0){
+                    setTimeout(function() {
+                        var newCard = getCard();
+                        flipAndMoveCard(newCard, userX, userY);
+                        fetchCardValue(newCard)
+                            .then(function(value) {
+                                if(value == 20){
+                                    handleDealerAce();
+                                } else {
+                                    adjustUserVal(value);
+                                }
+                            })
+                            .catch(function(error) {
+                                console.error("Error fetching SVG value:", error);
+                            });
+                        userX += 4;
+                        if(userVal >= 21){
+                            endUser();
+                        }
+                    }, 500);
+                }
+                if(i % 2 == 1){
+                    setTimeout(function() {
+                        var newCard = getCard();
+                        flipAndMoveCard(newCard, dealerX, dealerY);
+                        fetchCardValue(newCard)
+                            .then(function(value) {
+                                if(value == 20){
+                                    handleDealerAce();
+                                } else {
+                                    adjustDealerVal(value);
+                                }
+                            })
+                            .catch(function(error) {
+                                console.error("Error fetching SVG value:", error);
+                            });
+                        dealerX += 4;
+                    }, 100);
+                }
+
             }
-            if(i % 2 == 1){
-                flipAndMoveCard(getCard(), dealerX, dealerY)
-                userX += 5;
-            }
-
+            
         }
-        
-    }
 
-    // setTimeout(function() {
-    //     deal();
-    // }, 600);
+        setTimeout(function() {
+            $(".gamebuttons-container").css("visibility", "visible");
+            $(".bubble").css("visibility", "visible");
+        }, 1900);
+
+        setTimeout(function() {
+            var checkDealer = getCard();
+            fetchCardValue(checkDealer)
+                    .then(function(value) {
+                        console.log(parseInt(value));
+                        console.log(parseInt(dealerVal));
+                        console.log(parseInt(value) + parseInt(dealerVal));
+                        if(parseInt(value) + parseInt(dealerVal) == 30){
+                            setTimeout(function() {
+                                dealerBlackjack(checkDealer);
+                                endDealer();
+                            }, 1000);
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error("Error fetching SVG value:", error);
+                    });
+        }, 1000);
+    }
 
 }
 
@@ -152,6 +215,14 @@ function changeTable() {
     $(".mainbuttons-container").css("visibility", "hidden");
     $(".chip").off("click");
     $(".placed").off("click");
+
+    setTimeout(function() {
+        $(".chip-container").children().not('.placed').each(function() {
+            $(this).animate({
+                left: "-50%"
+            }, 1000);
+        });
+    }, 1000);
 
     $("#totalBet").animate({
         top: 40 + "%",
@@ -172,13 +243,8 @@ function shuffleDeck() {
     }
 }
 
-function deal(){
-    
-    $(".gamebuttons-container").css("visibility", "visible");
-
-}
-
 function flipAndMoveCard(card, x, y) {
+    zval += 1;
 
     $.ajax({
         url: "SVG/", 
@@ -195,12 +261,16 @@ function flipAndMoveCard(card, x, y) {
                     $(".card-container").append($card);
                     $($card).toggleClass('flipped').animate({
                         left: x + "%",
-                        top: y + "%"
+                        top: y + "%",
+                        rotate: "25deg",
+                        zIndex: zval
                     }, 1000);
                 } else {
                     $($card).toggleClass('flipped').animate({
                         left: x + "%",
-                        top: y + "%"
+                        top: y + "%",
+                        rotate: "25deg",
+                        zIndex: zval
                     }, 1000);
                 }
             }).fail(function(jqXHR, textStatus, errorThrown) {
@@ -231,4 +301,176 @@ function checkBet(){
             colorChangeAllowed = true;
         }, 1000);
     }
+}
+
+function Hit() {
+    var card = getCard()
+    flipAndMoveCard(card, userX, userY);
+    userX += 4;
+    fetchCardValue(card)
+        .then(function(value) {
+            if(value == 20){
+                handleDealerAce();
+            } else {
+                adjustUserVal(value);
+            }
+        })
+        .catch(function(error) {
+            console.error("Error fetching SVG value:", error);
+        });
+}
+
+function fetchCardValue(card) {
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            url: "SVG/" + card,
+            method: "GET",
+            success: function(response) {
+                var $card = $(response.documentElement); 
+                var value = $card.attr("value");
+                resolve(value);
+            },
+            error: function(xhr, status, error) {
+                reject(error);
+            }
+        });
+    });
+}
+
+function adjustUserVal(value) {
+    userVal += parseInt(value);
+    $(".card-count2").text(userVal);
+    if(userVal >= 21){
+        endUser();
+    } 
+}
+
+function adjustDealerVal(value) {
+    dealerVal += parseInt(value);
+    $(".card-count1").text(dealerVal);
+}
+
+function stand(){
+    flyDealerCard();
+    var intervalId = setInterval(function() {
+        if (win()) {
+            clearInterval(intervalId); 
+        } else {
+            var card = getCard();
+            flipAndMoveCard(card, dealerX, dealerY);
+            fetchCardValue(card)
+                .then(function(value) {
+                    if(value == 20){
+                        handleDealerAce();
+                        dealerX += 4;
+                    } else {
+                        adjustDealerVal(value);
+                        dealerX += 4;
+                    }
+                })
+                .catch(function(error) {
+                    console.error("Error fetching SVG value:", error);
+                });
+        }
+    }, 1000);
+}
+
+function flyDealerCard(){
+    $(".dealerBackCard").animate({
+        top: -9 + "%"
+    }, 1000);
+    var newCard = getCard();
+    fetchCardValue(newCard)
+        .then(function(value) {
+            if(value == 20){
+                handleDealerAce();
+            } else {
+                adjustDealerVal(value);
+            }
+        })
+        .catch(function(error) {
+            console.error("Error fetching SVG value:", error);
+        });
+    dealerX += 4;
+    $('.gamebuttons-container').css("visibility", "hidden");
+    setTimeout(function() {
+        $(".dealerBackCard").remove();
+        replaceDealerCard(newCard);
+    }, 1000);
+}
+
+function replaceDealerCard(card){
+    $.ajax({
+        url: "SVG/", 
+        method: "GET",
+        success: function(response) {
+            var containsCard = $(response).filter(function() {
+                return $(this).text().indexOf('card') !== -1; 
+            });
+
+            $.get("SVG/" + card, function(card) {
+                var $card = $(card.documentElement);
+                if (containsCard.length === 0) {
+                    $card.addClass("card"); 
+                    $card.attr("id", "new");
+                    $(".card-container").append($card);
+                    $("#new").css({
+                        "position": "absolute", 
+                        "top": "1%",    
+                        "left": "34%",
+                        "rotate": "25deg",
+                        "zIndex": zval - 1         
+                    });
+                    $($card).animate({
+                        top: 10 + "%"
+                    }, 1000);
+                }
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.error("Failed to load SVG file:", errorThrown);
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching content:", error);
+        }
+    });
+}
+
+function handleUserAce(){
+
+}
+
+function handleDealerAce(){
+    
+}
+
+function win(){
+    return (dealerVal >= 17);
+}
+
+function endUser(){
+    if(userVal == 21){
+        console.log("blackjack");
+        flyDealerCard();
+    } else {
+        console.log("bust");
+        flyDealerCard();
+    }
+}
+
+function endDealer(){
+
+}
+
+function dealerBlackjack(card){
+    $(".dealerBackCard").animate({
+        top: -9 + "%"
+    }, 1000);
+    dealerX += 4;
+    dealerVal = 21;
+    $(".card-count1").text(dealerVal);
+    $('.gamebuttons-container').css("visibility", "hidden");
+    setTimeout(function() {
+        $(".dealerBackCard").remove();
+        replaceDealerCard(card);
+    }, 1000);
 }

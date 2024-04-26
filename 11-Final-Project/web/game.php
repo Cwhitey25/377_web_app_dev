@@ -135,10 +135,16 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
 
     <div class="gamebuttons-container">
         <button class="hit-button" onclick="Hit()">
-            Hit <i class="bi bi-x-circle"></i>
+            Hit <i class="bi bi-play-fill" ></i>
         </button>
-        <button class="stand-button" onclick="Stand()">
-            Stand <i class="bi bi-play-fill" ></i>
+        <button class="stand-button" onclick="stand()">
+            Stand <i class="bi bi-sign-stop"></i>
+        </button>
+        <button class="double-button" onclick="double()">
+            Double <i class="bi bi-chevron-double-down"></i>
+        </button>
+        <button class="split-button" onclick="split()">
+            Split <i class="bi bi-layout-split"></i>
         </button>
     </div>
 
@@ -146,10 +152,27 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
         <div class="card" id="card"></div>
     </div>
 
+    <div class="bubble dealer">
+        <div class="triangle"></div>
+        <div class="card-count1">0</div>
+    </div>
+    <div class="bubble player">
+        <div class="triangle"></div>
+        <div class="card-count2">0</div>
+    </div>
+
     <script>
         $(document).ready(function() {
 
             var chipsClickable = false;
+
+            $(".hit-button").click(function() {
+                $(this).prop("disabled", true);
+
+                setTimeout(function() {
+                    $(".hit-button").prop("disabled", false); 
+                }, 900); 
+            });
 
             $.ajax({
                 url: "SVG/",
@@ -213,6 +236,7 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
             setTimeout(function() {
                 $(".chip").on('click', function() {
                     if (!$(this).hasClass("final-chip")) {
+                        console.log(this);
                         var chipValue = parseInt($(this).attr("value"));
                         totalBet += chipValue;
 
