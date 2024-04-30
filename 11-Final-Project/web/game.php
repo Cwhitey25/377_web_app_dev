@@ -86,17 +86,18 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
     </div>
 
     <div class="wood-box">
+        <img src="images/coin.png" class="coin-icon">
         <div class="coin-count">
             <?php
                 include('library.php');
                 $connection = get_database_connection();
 
-            if(isset($_SESSION['username'])) {
-                $username = $_SESSION['username'];
-            } else {
-                header("Location: login.php");
-                exit();
-            }
+                if(isset($_SESSION['username'])) {
+                    $username = $_SESSION['username'];
+                } else {
+                    header("Location: login.php");
+                    exit();
+                }
 
 
                 $sql = "SELECT coins FROM users WHERE username = '$username'";
@@ -105,7 +106,6 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
                 if ($result->num_rows > 0) {
                     while($row = $result->fetch_assoc()) {
                         echo '<div class="user-info">';
-                        echo '<img src="images/coin.png" class="coin-icon">'; 
                         echo '<span id="coins">' . number_format($row["coins"]) . '</span>';
                         echo '</div>'; 
                     }

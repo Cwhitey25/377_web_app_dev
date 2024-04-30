@@ -118,6 +118,18 @@ function clearBet() {
 
 function startDeal() {
     if (totalBet > 0){
+        animateCoin(totalBet);
+        $.ajax({
+            url: 'update-coins.php',
+            type: 'POST', 
+            data: { key: -totalBet }, 
+            success: function(response) {
+                console.log('Response from PHP:', response);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
         $(".card-container").css("z-index", "1");
         changeTable();
         shuffleDeck();
@@ -147,7 +159,7 @@ function startDeal() {
                         fetchCardValue(newCard)
                             .then(function(value) {
                                 if(value == 20){
-                                    handleDealerAce();
+                                    handleUserAce();
                                 } else {
                                     adjustUserVal(value);
                                 }
@@ -183,7 +195,7 @@ function startDeal() {
             }
             
         }
-
+        
         setTimeout(function() {
             $(".gamebuttons-container").css("visibility", "visible");
             $(".bubble").css("visibility", "visible");
@@ -304,15 +316,36 @@ function checkBet(){
 }
 
 function Hit() {
-    var card = getCard()
+    var card = getCard();
     flipAndMoveCard(card, userX, userY);
     userX += 4;
     fetchCardValue(card)
         .then(function(value) {
-            if(value == 20){
-                handleDealerAce();
+            if (value == 20) {
+                handleUserAce();
             } else {
                 adjustUserVal(value);
+            }
+            // Check if the text contains a '/'
+            if ($(".card-count2").text().includes('/')) {
+                var values = $(".card-count2").text().split('/');
+                var value1 = parseInt(values[0]);
+                var value2 = parseInt(values[1]);
+                var closestValue = value1;
+                if (value2 <= 21 && value2 > value1) {
+                    closestValue = value2;
+                }
+                if (closestValue > 21) {
+                    // Adjust ace value to 1 if the closest value is over 21
+                    $(".card-count2").text(value1);
+                } else {
+                    // Adjust ace value to 11 if the closest value is under or equal to 21
+                    $(".card-count2").text(closestValue);
+                }
+            }
+            // Check if the user has busted after the hit
+            if (parseInt($(".card-count2").text()) > 21) {
+                endUser();
             }
         })
         .catch(function(error) {
@@ -338,34 +371,62 @@ function fetchCardValue(card) {
 }
 
 function adjustUserVal(value) {
-    userVal += parseInt(value);
+    if (value === 20) {
+        handleUserAce();
+    } else {
+        userVal += parseInt(value);
+    }
     $(".card-count2").text(userVal);
-    if(userVal >= 21){
+    if (userVal >= 21) {
         endUser();
-    } 
+    }
 }
 
 function adjustDealerVal(value) {
-    dealerVal += parseInt(value);
+    if (value === 20) {
+        handleDealerAce();
+    } else {
+        dealerVal += parseInt(value);
+    }
     $(".card-count1").text(dealerVal);
 }
 
-function stand(){
+function stand() {
     flyDealerCard();
     var intervalId = setInterval(function() {
         if (win()) {
-            clearInterval(intervalId); 
+            clearInterval(intervalId);
+            endDealer();
         } else {
             var card = getCard();
             flipAndMoveCard(card, dealerX, dealerY);
             fetchCardValue(card)
                 .then(function(value) {
-                    if(value == 20){
+                    if (value == 20) {
                         handleDealerAce();
-                        dealerX += 4;
                     } else {
                         adjustDealerVal(value);
-                        dealerX += 4;
+                    }
+                    // Check if the text contains a '/'
+                    if ($(".card-count1").text().includes('/')) {
+                        var values = $(".card-count1").text().split('/');
+                        var value1 = parseInt(values[0]);
+                        var value2 = parseInt(values[1]);
+                        var closestValue = value1;
+                        if (value2 <= 21 && value2 > value1) {
+                            closestValue = value2;
+                        }
+                        if (closestValue > 21) {
+                            // Adjust ace value to 1 if the closest value is over 21
+                            $(".card-count1").text(value1);
+                        } else {
+                            // Adjust ace value to 11 if the closest value is under or equal to 21
+                            $(".card-count1").text(closestValue);
+                        }
+                    }
+                    // Check if the dealer has busted after the hit
+                    if (parseInt($(".card-count1").text()) > 21) {
+                        endDealer();
                     }
                 })
                 .catch(function(error) {
@@ -383,20 +444,31 @@ function flyDealerCard(){
     fetchCardValue(newCard)
         .then(function(value) {
             if(value == 20){
-                handleDealerAce();
+                if(DealerVal + value == 30){
+                    $(".card-count1").text(21);
+                    endDealer();
+                } else {
+                    handleDealerAce();
+                    dealerX += 4;
+                    $('.gamebuttons-container').css("visibility", "hidden");
+                    setTimeout(function() {
+                        $(".dealerBackCard").remove();
+                        replaceDealerCard(newCard);
+                    }, 1000);
+                }
             } else {
                 adjustDealerVal(value);
+                dealerX += 4;
+                $('.gamebuttons-container').css("visibility", "hidden");
+                setTimeout(function() {
+                    $(".dealerBackCard").remove();
+                    replaceDealerCard(newCard);
+                }, 1000);
             }
         })
         .catch(function(error) {
             console.error("Error fetching SVG value:", error);
         });
-    dealerX += 4;
-    $('.gamebuttons-container').css("visibility", "hidden");
-    setTimeout(function() {
-        $(".dealerBackCard").remove();
-        replaceDealerCard(newCard);
-    }, 1000);
 }
 
 function replaceDealerCard(card){
@@ -435,12 +507,24 @@ function replaceDealerCard(card){
     });
 }
 
-function handleUserAce(){
-
+function handleUserAce() {
+    if (userVal + 11 <= 21) {
+        userVal += 11;
+        $(".card-count2").text(userVal + "/" + (userVal - 10));
+    } else {
+        userVal += 1;
+        $(".card-count2").text(userVal);
+    }
 }
 
-function handleDealerAce(){
-    
+function handleDealerAce() {
+    if (dealerVal + 11 <= 21 && dealerVal < 17) {
+        dealerVal += 11;
+        $(".card-count1").text(dealerVal + "/" + (dealerVal - 10));
+    } else {
+        dealerVal += 1;
+        $(".card-count1").text(dealerVal);
+    }
 }
 
 function win(){
@@ -458,7 +542,7 @@ function endUser(){
 }
 
 function endDealer(){
-
+    checkOutcome();
 }
 
 function dealerBlackjack(card){
@@ -473,4 +557,30 @@ function dealerBlackjack(card){
         $(".dealerBackCard").remove();
         replaceDealerCard(card);
     }, 1000);
+}
+
+function animateCoin(amount) {
+    var $coinCount = $(".coin-count"); 
+    var currentValue = parseInt($coinCount.text().replace(/,/g, ''), 10); 
+    var targetValue = currentValue - amount - 1;
+
+    $({ value: currentValue }).animate({ value: targetValue }, {
+        duration: 3000,
+        step: function() {
+            $coinCount.text(Math.ceil(this.value).toLocaleString()); 
+        }
+    });
+}
+
+function checkOutcome() {
+    if (userVal > 21 || (dealerVal <= 21 && dealerVal > userVal)) {
+        // Dealer wins
+        console.log("You lose!");
+    } else if (userVal === 21 || (dealerVal > 21) || (userVal <= 21 && userVal > dealerVal)) {
+        // Player wins
+        console.log("You win!");
+    } else {
+        // Push
+        console.log("Push!");
+    }
 }
