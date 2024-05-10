@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,8 +40,6 @@ try {
     echo 'Connection failed: ' . $e->getMessage();
     exit();
 }
-
-session_start();
 
 $username = $_SESSION['username'];
 $sql = "SELECT created_at, last_bonus_at, coins FROM users WHERE username = :username";
@@ -98,7 +96,6 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
                     header("Location: login.php");
                     exit();
                 }
-
 
                 $sql = "SELECT coins FROM users WHERE username = '$username'";
                 $result = $connection->query($sql);
@@ -159,6 +156,11 @@ if ($timeSinceLastBonus >= $twentyFourHoursInSeconds && $timeSinceCreated >= $tw
     <div class="bubble player">
         <div class="triangle"></div>
         <div class="card-count2">0</div>
+    </div>
+
+    <div class="message-overlay"></div>
+        <div class="message-container">
+        <div class="message-box"></div>
     </div>
 
     <script>

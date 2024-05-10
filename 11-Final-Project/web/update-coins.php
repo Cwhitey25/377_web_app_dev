@@ -1,9 +1,9 @@
 <?php
+session_start();
 
 include('library.php');
 $connection = get_database_connection();
 
-session_start();
 $username = $_SESSION['username'];
 
 $sql = "SELECT coins FROM users WHERE username = ?";

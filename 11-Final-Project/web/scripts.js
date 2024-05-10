@@ -9,6 +9,10 @@ var colorChangeAllowed = true;
 var userVal = 0;
 var dealerVal = 0;
 var zval = 0;
+var userFirst = 0;
+var userSecond = 0;
+var firstCard = true;
+var userAce = false;
 
 
 function playAnimation() {
@@ -118,7 +122,11 @@ function clearBet() {
 
 function startDeal() {
     if (totalBet > 0){
-        animateCoin(totalBet);
+        var coins = $("#coins").text();
+        var cleanNumber = coins.replace(/,/g, '');
+        var number = parseInt(cleanNumber);
+
+        animateCoin(-totalBet);
         $.ajax({
             url: 'update-coins.php',
             type: 'POST', 
@@ -159,8 +167,18 @@ function startDeal() {
                         fetchCardValue(newCard)
                             .then(function(value) {
                                 if(value == 20){
+                                    if(firstCard = true){
+                                        userFirst = 20;
+                                    } else {
+                                        userSecond = 20;
+                                    }
                                     handleUserAce();
                                 } else {
+                                    if(firstCard = true){
+                                        userFirst = parseInt(value);
+                                    } else {
+                                        userSecond = parseInt(value);
+                                    }
                                     adjustUserVal(value);
                                 }
                             })
@@ -172,6 +190,7 @@ function startDeal() {
                             endUser();
                         }
                     }, 500);
+                    firstCard = false;
                 }
                 if(i % 2 == 1){
                     setTimeout(function() {
@@ -195,19 +214,24 @@ function startDeal() {
             }
             
         }
-        
+
         setTimeout(function() {
             $(".gamebuttons-container").css("visibility", "visible");
             $(".bubble").css("visibility", "visible");
+            if(userFirst == userSecond){
+                $('.split-button').css("visibility", "visible");
+            }
+            if(totalBet < number){
+                $(".double-button").css("visibility", "visible");
+            }
+            console.log(userFirst);
+            console.log(userSecond);
         }, 1900);
 
         setTimeout(function() {
             var checkDealer = getCard();
             fetchCardValue(checkDealer)
                     .then(function(value) {
-                        console.log(parseInt(value));
-                        console.log(parseInt(dealerVal));
-                        console.log(parseInt(value) + parseInt(dealerVal));
                         if(parseInt(value) + parseInt(dealerVal) == 30){
                             setTimeout(function() {
                                 dealerBlackjack(checkDealer);
@@ -316,6 +340,7 @@ function checkBet(){
 }
 
 function Hit() {
+    $('.double-button').css("visibility", "hidden");
     var card = getCard();
     flipAndMoveCard(card, userX, userY);
     userX += 4;
@@ -326,24 +351,7 @@ function Hit() {
             } else {
                 adjustUserVal(value);
             }
-            // Check if the text contains a '/'
-            if ($(".card-count2").text().includes('/')) {
-                var values = $(".card-count2").text().split('/');
-                var value1 = parseInt(values[0]);
-                var value2 = parseInt(values[1]);
-                var closestValue = value1;
-                if (value2 <= 21 && value2 > value1) {
-                    closestValue = value2;
-                }
-                if (closestValue > 21) {
-                    // Adjust ace value to 1 if the closest value is over 21
-                    $(".card-count2").text(value1);
-                } else {
-                    // Adjust ace value to 11 if the closest value is under or equal to 21
-                    $(".card-count2").text(closestValue);
-                }
-            }
-            // Check if the user has busted after the hit
+
             if (parseInt($(".card-count2").text()) > 21) {
                 endUser();
             }
@@ -371,11 +379,11 @@ function fetchCardValue(card) {
 }
 
 function adjustUserVal(value) {
-    if (value === 20) {
-        handleUserAce();
-    } else {
-        userVal += parseInt(value);
+    if (userAce && userVal > 21) {
+        userVal -= 10; 
+        userAce = false; 
     }
+    userVal += parseInt(value);
     $(".card-count2").text(userVal);
     if (userVal >= 21) {
         endUser();
@@ -392,6 +400,7 @@ function adjustDealerVal(value) {
 }
 
 function stand() {
+    $('.double-button').css("visibility", "hidden");
     flyDealerCard();
     var intervalId = setInterval(function() {
         if (win()) {
@@ -400,6 +409,7 @@ function stand() {
         } else {
             var card = getCard();
             flipAndMoveCard(card, dealerX, dealerY);
+            dealerX += 4;
             fetchCardValue(card)
                 .then(function(value) {
                     if (value == 20) {
@@ -407,24 +417,7 @@ function stand() {
                     } else {
                         adjustDealerVal(value);
                     }
-                    // Check if the text contains a '/'
-                    if ($(".card-count1").text().includes('/')) {
-                        var values = $(".card-count1").text().split('/');
-                        var value1 = parseInt(values[0]);
-                        var value2 = parseInt(values[1]);
-                        var closestValue = value1;
-                        if (value2 <= 21 && value2 > value1) {
-                            closestValue = value2;
-                        }
-                        if (closestValue > 21) {
-                            // Adjust ace value to 1 if the closest value is over 21
-                            $(".card-count1").text(value1);
-                        } else {
-                            // Adjust ace value to 11 if the closest value is under or equal to 21
-                            $(".card-count1").text(closestValue);
-                        }
-                    }
-                    // Check if the dealer has busted after the hit
+
                     if (parseInt($(".card-count1").text()) > 21) {
                         endDealer();
                     }
@@ -444,7 +437,7 @@ function flyDealerCard(){
     fetchCardValue(newCard)
         .then(function(value) {
             if(value == 20){
-                if(DealerVal + value == 30){
+                if(dealerVal + value == 30){
                     $(".card-count1").text(21);
                     endDealer();
                 } else {
@@ -508,9 +501,14 @@ function replaceDealerCard(card){
 }
 
 function handleUserAce() {
-    if (userVal + 11 <= 21) {
+    userAce = true;
+    if (userVal + 11 < 21) {
         userVal += 11;
-        $(".card-count2").text(userVal + "/" + (userVal - 10));
+        $(".card-count2").text(userVal);
+    } else if(userVal + 11 == 21){
+        userVal += 11;
+        $(".card-count2").text(21);
+        endUser();
     } else {
         userVal += 1;
         $(".card-count2").text(userVal);
@@ -518,9 +516,10 @@ function handleUserAce() {
 }
 
 function handleDealerAce() {
+    dealerAce = true;
     if (dealerVal + 11 <= 21 && dealerVal < 17) {
         dealerVal += 11;
-        $(".card-count1").text(dealerVal + "/" + (dealerVal - 10));
+        $(".card-count1").text(dealerVal);
     } else {
         dealerVal += 1;
         $(".card-count1").text(dealerVal);
@@ -532,13 +531,59 @@ function win(){
 }
 
 function endUser(){
-    if(userVal == 21){
-        console.log("blackjack");
-        flyDealerCard();
-    } else {
-        console.log("bust");
-        flyDealerCard();
+    var messageOverlay = $(".message-overlay");
+    var messageContainer = $(".message-container");
+    var messageBox = $(".message-box");
+    var finalAmount = 0;
+
+    if (userVal > 21) {
+        messageBox.html("You Bust! <br> $<span class='loss'>" + -totalBet + "</span>");
+    } else if (userVal === 21) {
+        finalAmount = totalBet * 2;
+        messageBox.html("You Win With Blackjack ! <br> $<span class='win'>" + finalAmount + "</span>");
     }
+
+    $(".dealerBackCard").animate({
+        top: -9 + "%"
+    }, 1000);
+    var newCard = getCard();
+    fetchCardValue(newCard)
+        .then(function(value) {
+            if(value == 20){
+                $(".card-count1").text(dealerVal + 11);
+                console.log(dealerVal + 11);
+            } else {
+                $(".card-count1").text(dealerVal + parseInt(value));
+                console.log(value);
+                $('.gamebuttons-container').css("visibility", "hidden");
+            }
+        })
+        .catch(function(error) {
+            console.error("Error fetching SVG value:", error);
+        });
+
+    animateCoin(finalAmount);
+
+    $.ajax({
+        url: 'update-coins.php',
+        type: 'POST', 
+        data: { key: finalAmount }, 
+        success: function(response) {
+            console.log('Response from PHP:', response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+
+    messageOverlay.fadeIn();
+    messageContainer.addClass("show");
+
+    flyOffChipsAndBet();
+
+    setTimeout(function() {
+        window.location.reload();
+    }, 2500);
 }
 
 function endDealer(){
@@ -562,25 +607,77 @@ function dealerBlackjack(card){
 function animateCoin(amount) {
     var $coinCount = $(".coin-count"); 
     var currentValue = parseInt($coinCount.text().replace(/,/g, ''), 10); 
-    var targetValue = currentValue - amount - 1;
+    var targetValue = currentValue + amount;
 
-    $({ value: currentValue }).animate({ value: targetValue }, {
+    $({ value: currentValue }).animate({ value: targetValue}, {
         duration: 3000,
         step: function() {
             $coinCount.text(Math.ceil(this.value).toLocaleString()); 
+        },
+        complete: function() {
+                $coinCount.text((targetValue.toLocaleString()));
         }
     });
 }
 
 function checkOutcome() {
+    var messageOverlay = $(".message-overlay");
+    var messageContainer = $(".message-container");
+    var messageBox = $(".message-box");
+    var finalAmount = 0;
+
     if (userVal > 21 || (dealerVal <= 21 && dealerVal > userVal)) {
-        // Dealer wins
-        console.log("You lose!");
+        messageBox.html("You lose! <br> $<span class='loss'>" + -totalBet + "</span>");
     } else if (userVal === 21 || (dealerVal > 21) || (userVal <= 21 && userVal > dealerVal)) {
-        // Player wins
-        console.log("You win!");
+        finalAmount = totalBet * 2;
+        messageBox.html("You win! <br> $+<span class='win'>" + finalAmount + "</span>");
     } else {
-        // Push
-        console.log("Push!");
+        finalAmount = totalBet;
+        messageBox.text("Push!");
+        messageBox.addClass("push");
     }
+
+    animateCoin(finalAmount);
+
+    $.ajax({
+        url: 'update-coins.php',
+        type: 'POST', 
+        data: { key: finalAmount }, 
+        success: function(response) {
+            console.log('Response from PHP:', response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+
+    messageOverlay.fadeIn();
+    messageContainer.addClass("show");
+
+    flyOffChipsAndBet();
+
+    setTimeout(function() {
+        window.location.reload();
+    }, 3000);
+}
+
+function flyOffChipsAndBet() {
+    $(".chip, .placed, #totalBet").animate({
+        top: 0,
+        left: 0,
+        opacity: 0
+    }, 2500, function() {
+        $(".chip, .placed, #totalBet").remove();
+    });
+}
+
+function double(){
+    animateCoin(-totalBet);
+    totalBet *= 2;
+    $("#totalBet").text(formatter.format(totalBet));
+    $('.double-button').css("visibility", "hidden");
+}
+
+function split(){
+
 }
